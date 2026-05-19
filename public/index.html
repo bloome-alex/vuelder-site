@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Vuelder crea aplicaciones de gestión simples para ayudar a microemprendimientos a automatizarse, ordenarse y crecer con tecnología." />
+  <title>Vuelder | Tecnología para microemprendimientos</title>
+
+  <style>
+    :root {
+      --azul-oscuro: #071a3d;
+      --azul: #0b5ed7;
+      --azul-medio: #2563eb;
+      --azul-claro: #eaf3ff;
+      --celeste: #38bdf8;
+      --blanco: #ffffff;
+      --gris: #64748b;
+      --gris-2: #94a3b8;
+      --gris-claro: #f8fafc;
+      --gris-borde: #e2e8f0;
+      --sombra: 0 20px 50px rgba(7, 26, 61, 0.18);
+      --sombra-suave: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --borde: rgba(255, 255, 255, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--azul-oscuro);
+      background: var(--gris-claro);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 8vw, 120px);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 26, 61, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--blanco);
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: var(--blanco);
+      padding: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--celeste);
+    }
+
+    .instagram-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      color: var(--blanco);
+      transition: 0.2s ease;
+    }
+
+    .instagram-link:hover {
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.24), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(11, 94, 215, 0.32), transparent 34%),
+        linear-gradient(135deg, #06142f 0%, #071a3d 48%, #0b5ed7 100%);
+      color: var(--blanco);
+      padding: 24px 0 72px;
+    }
+
+    .hero-intro {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 54px;
+    }
+
+    .hero-intro > div {
+      max-width: 920px;
+    }
+
+    .hero-intro .hero-actions {
+      justify-content: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: #dbeafe;
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 4.4vw, 4.4rem);
+      line-height: 1.04;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #dbeafe;
+      font-size: 1.15rem;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--blanco);
+      color: var(--azul-oscuro);
+    }
+
+    .btn-secondary {
+      color: var(--blanco);
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sombra);
+    }
+
+    .dashboard-wrap {
+      width: 100%;
+      padding: 0 clamp(16px, 3vw, 44px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .dashboard-window {
+      width: min(1320px, 100%);
+      min-width: 0;
+      min-height: 560px;
+      background: #f8fbff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .window-topbar {
+      height: 54px;
+      background: #edf4ff;
+      border-bottom: 1px solid #d9e8ff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      color: var(--azul-oscuro);
+    }
+
+    .window-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .window-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .window-dots span:nth-child(1) { background: #60a5fa; }
+    .window-dots span:nth-child(2) { background: #38bdf8; }
+    .window-dots span:nth-child(3) { background: #93c5fd; }
+
+    .window-search {
+      min-width: 200px;
+      background: var(--blanco);
+      border: 1px solid #dbeafe;
+      color: var(--gris-2);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    .dashboard-body {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      min-height: 506px;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #071a3d 0%, #0d275b 100%);
+      color: rgba(255,255,255,0.9);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-brand img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      background: white;
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .menu-group {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 2px;
+    }
+
+    .menu-item {
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.94rem;
+    }
+
+    .menu-item.active {
+      background: linear-gradient(135deg, rgba(56,189,248,0.22), rgba(37,99,235,0.28));
+      color: white;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar-note {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.07);
+      font-size: 0.87rem;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .main-panel {
+      min-width: 0;
+      padding: 28px;
+      background: linear-gradient(180deg, #f8fbff 0%, #f1f7ff 100%);
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .panel-title h3 {
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+
+    .panel-title p {
+      color: var(--gris);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .status-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #e0efff;
+      color: var(--azul);
+      font-size: 0.9rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      min-width: 0;
+      background: white;
+      border: 1px solid #e2ecfa;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--sombra-suave);
+    }
+
+    .stat-card .small {
+      color: var(--gris);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .stat-card strong {
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      display: block;
+      margin-bottom: 6px;
+      color: var(--azul-oscuro);
+    }
+
+    .stat-card .info {
+      color: var(--azul);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+      gap: 16px;
+    }
+
+    .table-card,
+    .chart-card {
+      min-width: 0;
+      background: white;
+      border: 1px solid #e2ecfa;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--sombra-suave);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .card-head h4 {
+      font-size: 1rem;
+      color: var(--azul-oscuro);
+    }
+
+    .tag {
+      font-size: 0.82rem;
+      color: var(--azul);
+      font-weight: 700;
+      background: var(--azul-claro);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .dashboard-table {
+      display: grid;
+      gap: 10px;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(88px, 0.8fr) minmax(64px, 0.7fr);
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: #f8fbff;
+      border: 1px solid #ecf3ff;
+      font-size: 0.88rem;
+    }
+
+    .table-row > div,
+    .stat-card,
+    .menu-item,
+    .card-head,
+    .panel-title {
+      min-width: 0;
+    }
+
+    .table-row.header {
+      background: transparent;
+      border: 0;
+      padding: 0 2px 6px;
+      color: var(--gris);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .table-row:not(.header) > div:first-child,
+    .table-row:not(.header) > div:last-child {
+      color: #000;
+    }
+
+    .badge {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      width: fit-content;
+    }
+
+    .badge.ok {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge.process {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .chart-bars {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .bar-item {
+      display: grid;
+      gap: 6px;
+    }
+
+    .bar-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--gris);
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 10px;
+      background: #e5efff;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--azul), var(--celeste));
+    }
+
+    section {
+      padding: 82px 0;
+    }
+
+    .section-title {
+      max-width: 760px;
+      margin-bottom: 38px;
+    }
+
+    .section-title span {
+      color: var(--azul);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 0.82rem;
+    }
+
+    .section-title h2 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.12;
+      letter-spacing: -1px;
+      margin: 10px 0 12px;
+    }
+
+    .section-title p {
+      color: var(--gris);
+      font-size: 1.05rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--blanco);
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+      transition: 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.1);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: var(--azul-claro);
+      color: var(--azul);
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--gris);
+      font-size: 0.97rem;
+    }
+
+    .module-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .module-card {
+      display: grid;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .module-copy {
+      display: grid;
+      gap: 8px;
+    }
+
+    .module-copy .icon {
+      margin-bottom: 2px;
+    }
+
+    .module-preview {
+      overflow: hidden;
+      border: 1px solid #dbeafe;
+      border-radius: 20px;
+      background: #f8fbff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .module-preview-top {
+      min-height: 42px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #edf4ff;
+      border-bottom: 1px solid #d9e8ff;
+      color: var(--azul-oscuro);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .module-dots {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .module-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #60a5fa;
+    }
+
+    .module-dots span:nth-child(2) {
+      background: #38bdf8;
+    }
+
+    .module-dots span:nth-child(3) {
+      background: #93c5fd;
+    }
+
+    .module-preview-body {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      background: linear-gradient(180deg, #f8fbff 0%, #f1f7ff 100%);
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .mini-stat,
+    .mini-panel,
+    .mini-row,
+    .mini-product,
+    .mini-slot,
+    .mini-client {
+      background: var(--blanco);
+      border: 1px solid #e2ecfa;
+      border-radius: 14px;
+    }
+
+    .mini-stat {
+      padding: 10px;
+    }
+
+    .mini-stat span,
+    .mini-label {
+      display: block;
+      color: var(--gris);
+      font-size: 0.72rem;
+      line-height: 1.2;
+    }
+
+    .mini-stat strong {
+      display: block;
+      color: var(--azul-oscuro);
+      font-size: 1rem;
+      line-height: 1.25;
+      margin-top: 4px;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      color: #000;
+      font-size: 0.84rem;
+    }
+
+    .mini-row strong,
+    .mini-product strong,
+    .mini-slot strong,
+    .mini-client strong {
+      color: #000;
+      font-size: 0.88rem;
+    }
+
+    .mini-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .mini-pill.ok {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .mini-pill.warn {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .mini-product,
+    .mini-slot,
+    .mini-client {
+      padding: 11px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .mini-panel {
+      padding: 12px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .mini-bar {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e5efff;
+    }
+
+    .mini-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--azul), var(--celeste));
+    }
+
+    .cart-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      color: #000;
+      font-size: 0.84rem;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #e2ecfa;
+      color: #000;
+      font-weight: 800;
+    }
+
+    .about {
+      background: var(--blanco);
+      padding-bottom: 42px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .visual-panel {
+      min-height: 420px;
+      border-radius: 32px;
+      background:
+        linear-gradient(135deg, rgba(11, 94, 215, 0.50), rgba(7, 26, 61, 0.58)),
+        url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80");
+      background-size: cover;
+      background-position: center;
+      color: var(--blanco);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+    }
+
+    .visual-panel h3 {
+      font-size: 1.8rem;
+      line-height: 1.15;
+      max-width: 420px;
+      margin-bottom: 10px;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    .visual-panel p {
+      color: #eef6ff;
+      max-width: 440px;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--azul-claro);
+      font-weight: 700;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--azul);
+      color: var(--blanco);
+      flex: 0 0 auto;
+      font-size: 0.8rem;
+    }
+
+    .audience {
+      background:
+        linear-gradient(180deg, var(--gris-claro), #eef6ff);
+      padding-top: 42px;
+    }
+
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .audience-item {
+      min-height: 210px;
+      border-radius: 24px;
+      padding: 24px;
+      color: var(--blanco);
+      background: linear-gradient(135deg, rgba(7, 26, 61, 0.42), rgba(11, 94, 215, 0.38));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: var(--sombra);
+    }
+
+    .audience-item:nth-child(1) {
+      background:
+        linear-gradient(135deg, rgba(7, 26, 61, 0.42), rgba(11, 94, 215, 0.38)),
+        url("https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=900&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .audience-item:nth-child(2) {
+      background:
+        linear-gradient(135deg, rgba(7, 26, 61, 0.42), rgba(11, 94, 215, 0.38)),
+        url("https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .audience-item:nth-child(3) {
+      background:
+        linear-gradient(135deg, rgba(7, 26, 61, 0.42), rgba(11, 94, 215, 0.38)),
+        url("https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=900&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .audience-item h3 {
+      font-size: 1.28rem;
+      margin-bottom: 8px;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    .audience-item p {
+      color: #eef6ff;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    .cta {
+      background: var(--azul-oscuro);
+      color: var(--blanco);
+    }
+
+    .cta-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 28px;
+      padding: 42px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(56, 189, 248, 0.3), transparent 28%),
+        linear-gradient(135deg, rgba(11, 94, 215, 0.8), rgba(255, 255, 255, 0.08));
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .cta p {
+      color: #dbeafe;
+      max-width: 700px;
+    }
+
+    footer {
+      background: #041026;
+      color: rgba(255,255,255,0.78);
+      padding: 32px 0;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-brand img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: var(--blanco);
+      padding: 4px;
+    }
+
+    .social {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blanco);
+    }
+
+    .social:hover {
+      color: var(--celeste);
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px);
+      transition:
+        opacity 0.75s ease,
+        transform 0.75s ease;
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.08s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.16s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.24s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .dashboard-window {
+        width: min(1080px, 100%);
+      }
+
+      .dashboard-body {
+        grid-template-columns: 210px minmax(0, 1fr);
+      }
+
+      .main-panel {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .about-grid,
+      .cta-box {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .audience-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .dashboard-wrap {
+        padding: 0 16px;
+      }
+
+      .dashboard-body {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-window {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .navbar {
+        min-height: 62px;
+        gap: 10px;
+      }
+
+      .brand {
+        gap: 8px;
+      }
+
+      .brand img {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+      }
+
+      .brand span {
+        font-size: 1rem;
+      }
+
+      .instagram-link {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+        gap: 6px;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .hero {
+        padding: 18px 0 36px;
+      }
+
+      .hero-intro {
+        text-align: left;
+        justify-content: flex-start;
+        margin-bottom: 0;
+      }
+
+      .eyebrow {
+        max-width: 100%;
+        padding: 7px 10px;
+        font-size: 0.76rem;
+        line-height: 1.25;
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        line-height: 1.08;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+      }
+
+      .hero p {
+        font-size: 0.92rem;
+        line-height: 1.55;
+        margin-bottom: 20px;
+      }
+
+      .hero-intro .hero-actions {
+        justify-content: flex-start;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+      }
+
+      .dashboard-wrap {
+        display: none;
+      }
+
+      section {
+        padding: 46px 0;
+      }
+
+      .section-title {
+        margin-bottom: 22px;
+      }
+
+      .section-title span {
+        font-size: 0.72rem;
+        letter-spacing: 0.9px;
+      }
+
+      .section-title h2,
+      .cta h2 {
+        font-size: 1.55rem;
+        line-height: 1.16;
+        letter-spacing: -0.5px;
+      }
+
+      .section-title p,
+      .cta p,
+      .visual-panel p,
+      .audience-item p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        border-radius: 16px;
+        padding: 12px;
+      }
+
+      .card:hover {
+        transform: none;
+      }
+
+      .icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+
+      .card h3 {
+        font-size: 0.92rem;
+        line-height: 1.15;
+        margin-bottom: 6px;
+      }
+
+      .card p {
+        font-size: 0.76rem;
+        line-height: 1.35;
+      }
+
+      .module-card {
+        gap: 0;
+        padding: 12px;
+      }
+
+      .module-copy {
+        gap: 4px;
+      }
+
+      .module-preview {
+        display: none;
+      }
+
+      .about-grid {
+        gap: 22px;
+      }
+
+      .visual-panel {
+        min-height: 260px;
+        border-radius: 22px;
+        padding: 22px;
+      }
+
+      .visual-panel h3 {
+        font-size: 1.35rem;
+      }
+
+      .benefits {
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .benefit {
+        padding: 10px;
+        border-radius: 12px;
+        font-size: 0.88rem;
+      }
+
+      .audience-grid {
+        gap: 10px;
+      }
+
+      .audience-item {
+        min-height: 210px;
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .audience-item h3 {
+        font-size: 1.05rem;
+      }
+
+      .cta-box {
+        padding: 22px;
+        border-radius: 22px;
+        gap: 18px;
+      }
+
+      .footer-content {
+        align-items: flex-start;
+        font-size: 0.85rem;
+      }
+
+      footer .social {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container navbar">
+      <a class="brand" href="#inicio" aria-label="Inicio de Vuelder">
+        <img src="assets/logo.png" alt="Logo de Vuelder" />
+        <span>Vuelder</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#que-hacemos">Qué hacemos</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#para-quienes">Para quiénes</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <a class="instagram-link" href="https://www.instagram.com/vuelder.dev/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Vuelder">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+          <circle cx="12" cy="12" r="4"></circle>
+          <circle cx="17.5" cy="6.5" r="1"></circle>
+        </svg>
+        @vuelder.dev
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-intro reveal">
+        <div>
+          <div class="eyebrow">🚀 Tecnología simple para pequeños negocios</div>
+          <h1>Automatizamos y ordenamos microemprendimientos.</h1>
+          <p>
+            En Vuelder creamos aplicaciones de gestión simples y eficientes para ayudar a emprendedores a organizar procesos, ahorrar tiempo y amigarse con la tecnología.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#que-hacemos">Conocer más</a>
+            <a class="btn btn-secondary" href="https://www.instagram.com/vuelder.dev/" target="_blank" rel="noopener noreferrer">Contactar por Instagram</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-wrap reveal reveal-delay-1" aria-label="Previsualización de dashboard de escritorio">
+        <div class="dashboard-window">
+          <div class="window-topbar">
+            <div class="window-left">
+              <div class="window-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <span>Dashboard de gestión</span>
+            </div>
+            <div class="window-search">Buscar pedidos, clientes...</div>
+          </div>
+
+          <div class="dashboard-body">
+            <aside class="sidebar">
+              <div class="sidebar-brand">
+                <img src="assets/logo.png" alt="Logo Vuelder" />
+                <span>Vuelder App</span>
+              </div>
+
+              <div class="menu-group">
+                <div class="menu-label">Panel</div>
+                <div class="menu-item active">📊 Resumen</div>
+                <div class="menu-item">🛒 Ventas</div>
+                <div class="menu-item">👥 Clientes</div>
+                <div class="menu-item">📦 Productos</div>
+              </div>
+
+              <div class="menu-group">
+                <div class="menu-label">Gestión</div>
+                <div class="menu-item">🗓️ Turnos</div>
+                <div class="menu-item">⚙️ Automatizaciones</div>
+                <div class="menu-item">📝 Reportes</div>
+              </div>
+
+              <div class="sidebar-note">
+                Todo en un solo lugar para ordenar tu negocio y ahorrar tiempo.
+              </div>
+            </aside>
+
+            <div class="main-panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h3>Resumen general</h3>
+                  <p>Vista simple del estado del negocio.</p>
+                </div>
+                <div class="status-pill">Sistema activo</div>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <span class="small">Ventas del día</span>
+                  <strong>$128.450</strong>
+                  <span class="info">+12% esta semana</span>
+                </div>
+                <div class="stat-card">
+                  <span class="small">Clientes</span>
+                  <strong>86</strong>
+                  <span class="info">Base organizada</span>
+                </div>
+                <div class="stat-card">
+                  <span class="small">Pedidos</span>
+                  <strong>24</strong>
+                  <span class="info">8 en proceso</span>
+                </div>
+              </div>
+
+              <div class="content-grid">
+                <div class="table-card">
+                  <div class="card-head">
+                    <h4>Últimos movimientos</h4>
+                    <span class="tag">Gestión diaria</span>
+                  </div>
+
+                  <div class="dashboard-table">
+                    <div class="table-row header">
+                      <div>Cliente</div>
+                      <div>Estado</div>
+                      <div>Monto</div>
+                    </div>
+                    <div class="table-row">
+                      <div>Pedido Tienda Norte</div>
+                      <div><span class="badge ok">Completado</span></div>
+                      <div>$18.000</div>
+                    </div>
+                    <div class="table-row">
+                      <div>Reserva Estudio Alma</div>
+                      <div><span class="badge process">En proceso</span></div>
+                      <div>$9.500</div>
+                    </div>
+                    <div class="table-row">
+                      <div>Venta Kiosco Central</div>
+                      <div><span class="badge ok">Completado</span></div>
+                      <div>$26.300</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chart-card">
+                  <div class="card-head">
+                    <h4>Rendimiento</h4>
+                    <span class="tag">Semanal</span>
+                  </div>
+
+                  <div class="chart-bars">
+                    <div class="bar-item">
+                      <div class="bar-top"><span>Ventas</span><span>82%</span></div>
+                      <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
+                    </div>
+                    <div class="bar-item">
+                      <div class="bar-top"><span>Pedidos</span><span>68%</span></div>
+                      <div class="bar-track"><div class="bar-fill" style="width:68%"></div></div>
+                    </div>
+                    <div class="bar-item">
+                      <div class="bar-top"><span>Seguimiento</span><span>74%</span></div>
+                      <div class="bar-track"><div class="bar-fill" style="width:74%"></div></div>
+                    </div>
+                    <div class="bar-item">
+                      <div class="bar-top"><span>Automatización</span><span>61%</span></div>
+                      <div class="bar-track"><div class="bar-fill" style="width:61%"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section id="que-hacemos" class="reveal">
+      <div class="container">
+        <div class="section-title">
+          <span>Qué hacemos</span>
+          <h2>Aplicaciones de gestión pensadas para ordenar cada parte del negocio.</h2>
+          <p>
+            Diseñamos sistemas simples y a medida para centralizar la información diaria: productos, stock, ventas, clientes,
+            turnos, pedidos, carrito de compra, pagos y reportes. La idea es que cada emprendedor pueda ver qué pasa en su
+            negocio, tomar mejores decisiones y trabajar con menos planillas sueltas o tareas repetidas.
+          </p>
+        </div>
+
+        <div class="cards module-cards">
+          <article class="card module-card reveal reveal-delay-1">
+            <div class="module-copy">
+              <div class="icon">📦</div>
+              <h3>Control de stock</h3>
+              <p>Organizamos entradas, salidas, cantidades disponibles, alertas por bajo stock y movimientos de inventario.</p>
+            </div>
+            <div class="module-preview" aria-label="Previsualización de control de stock">
+              <div class="module-preview-top">
+                <span><span class="module-dots"><span></span><span></span><span></span></span> Stock</span>
+                <span>Inventario</span>
+              </div>
+              <div class="module-preview-body">
+                <div class="mini-stats">
+                  <div class="mini-stat"><span>Productos</span><strong>248</strong></div>
+                  <div class="mini-stat"><span>Bajo stock</span><strong>12</strong></div>
+                  <div class="mini-stat"><span>Ingresos</span><strong>36</strong></div>
+                </div>
+                <div class="mini-list">
+                  <div class="mini-row"><strong>Remeras básicas</strong><span class="mini-pill ok">84 u.</span></div>
+                  <div class="mini-row"><strong>Tazas impresas</strong><span class="mini-pill warn">5 u.</span></div>
+                  <div class="mini-row"><strong>Stickers pack</strong><span class="mini-pill">32 u.</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card module-card reveal reveal-delay-2">
+            <div class="module-copy">
+              <div class="icon">🏷️</div>
+              <h3>Productos y catálogo</h3>
+              <p>Creamos paneles para cargar productos, precios, categorías, imágenes, variantes y disponibilidad.</p>
+            </div>
+            <div class="module-preview" aria-label="Previsualización de productos y catálogo">
+              <div class="module-preview-top">
+                <span><span class="module-dots"><span></span><span></span><span></span></span> Catálogo</span>
+                <span>Online</span>
+              </div>
+              <div class="module-preview-body">
+                <div class="mini-grid">
+                  <div class="mini-product"><strong>Combo mate</strong><span class="mini-label">Hogar</span><span class="mini-pill ok">Publicado</span></div>
+                  <div class="mini-product"><strong>Agenda 2026</strong><span class="mini-label">Papelería</span><span class="mini-pill">$14.900</span></div>
+                  <div class="mini-product"><strong>Kit premium</strong><span class="mini-label">Regalos</span><span class="mini-pill warn">Revisar</span></div>
+                  <div class="mini-product"><strong>Vela aroma</strong><span class="mini-label">Decoración</span><span class="mini-pill">3 variantes</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card module-card reveal reveal-delay-3">
+            <div class="module-copy">
+              <div class="icon">🧾</div>
+              <h3>Ventas y pedidos</h3>
+              <p>Registramos operaciones, estados de pedido, comprobantes, historial de compras y seguimiento de cada venta.</p>
+            </div>
+            <div class="module-preview" aria-label="Previsualización de ventas y pedidos">
+              <div class="module-preview-top">
+                <span><span class="module-dots"><span></span><span></span><span></span></span> Ventas</span>
+                <span>Hoy</span>
+              </div>
+              <div class="module-preview-body">
+                <div class="mini-stats">
+                  <div class="mini-stat"><span>Total</span><strong>$86.700</strong></div>
+                  <div class="mini-stat"><span>Pedidos</span><strong>18</strong></div>
+                  <div class="mini-stat"><span>Pendientes</span><strong>4</strong></div>
+                </div>
+                <div class="mini-list">
+                  <div class="mini-row"><strong>#1048 Tienda Norte</strong><span class="mini-pill ok">Pagado</span></div>
+                  <div class="mini-row"><strong>#1049 Alma Studio</strong><span class="mini-pill">Preparando</span></div>
+                  <div class="mini-row"><strong>#1050 Kiosco Central</strong><span class="mini-pill warn">Pendiente</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card module-card reveal reveal-delay-1">
+            <div class="module-copy">
+              <div class="icon">🛒</div>
+              <h3>Carrito de compra</h3>
+              <p>Desarrollamos flujos para sumar productos, calcular totales, confirmar pedidos y dejar lista la compra.</p>
+            </div>
+            <div class="module-preview" aria-label="Previsualización de carrito de compra">
+              <div class="module-preview-top">
+                <span><span class="module-dots"><span></span><span></span><span></span></span> Carrito</span>
+                <span>Checkout</span>
+              </div>
+              <div class="module-preview-body">
+                <div class="mini-panel">
+                  <div class="cart-line"><span>Combo mate x1</span><strong>$18.000</strong></div>
+                  <div class="cart-line"><span>Vela aroma x2</span><strong>$9.800</strong></div>
+                  <div class="cart-line"><span>Envío local</span><strong>$2.500</strong></div>
+                  <div class="cart-total"><span>Total</span><span>$30.300</span></div>
+                </div>
+                <div class="mini-row"><strong>Pedido listo para confirmar</strong><span class="mini-pill ok">Activo</span></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="about reveal" id="beneficios">
+      <div class="container about-grid">
+        <div class="visual-panel">
+          <h3>Herramientas claras para trabajar mejor.</h3>
+          <p>La tecnología no tiene que ser complicada. Nuestro enfoque es crear soluciones útiles, accesibles y fáciles de usar.</p>
+        </div>
+
+        <div>
+          <div class="section-title">
+            <span>Beneficios</span>
+            <h2>Más organización, menos tareas repetidas.</h2>
+            <p>
+              Vuelder busca acercar la tecnología a quienes están empezando o haciendo crecer su negocio.
+            </p>
+          </div>
+
+          <div class="benefits">
+            <div class="benefit"><span class="check">✓</span>Más organización</div>
+            <div class="benefit"><span class="check">✓</span>Ahorro de tiempo</div>
+            <div class="benefit"><span class="check">✓</span>Procesos simples</div>
+            <div class="benefit"><span class="check">✓</span>Mejor control</div>
+            <div class="benefit"><span class="check">✓</span>Uso fácil</div>
+            <div class="benefit"><span class="check">✓</span>Acompañamiento cercano</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="audience reveal" id="para-quienes">
+      <div class="container">
+        <div class="section-title">
+          <span>Para quiénes</span>
+          <h2>Trabajamos con negocios que quieren dar un paso digital.</h2>
+          <p>
+            Nos enfocamos en microemprendimientos, comercios, profesionales independientes y pequeños negocios que buscan gestionar mejor su actividad.
+          </p>
+        </div>
+
+        <div class="audience-grid">
+          <article class="audience-item reveal reveal-delay-1">
+            <h3>Microemprendimientos</h3>
+            <p>Para proyectos que necesitan ordenar ventas, clientes, pedidos o tareas.</p>
+          </article>
+
+          <article class="audience-item reveal reveal-delay-2">
+            <h3>Comercios y servicios</h3>
+            <p>Para negocios que quieren simplificar su gestión diaria con herramientas digitales.</p>
+          </article>
+
+          <article class="audience-item reveal reveal-delay-3">
+            <h3>Profesionales independientes</h3>
+            <p>Para quienes buscan organizar turnos, clientes, procesos o información de trabajo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta reveal" id="contacto">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h2>¿Querés digitalizar tu emprendimiento?</h2>
+            <p>
+              Conocé cómo Vuelder puede ayudarte a ordenar, automatizar y gestionar mejor tu negocio con tecnología simple.
+            </p>
+          </div>
+
+          <a class="btn btn-primary" href="https://www.instagram.com/vuelder.dev/" target="_blank" rel="noopener noreferrer">
+            Escribir a @vuelder.dev
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Logo de Vuelder" />
+        <div>
+          <strong>Vuelder</strong>
+          <p>Tecnología simple para microemprendimientos.</p>
+        </div>
+      </div>
+
+      <a class="social" href="https://www.instagram.com/vuelder.dev/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+          <circle cx="12" cy="12" r="4"></circle>
+          <circle cx="17.5" cy="6.5" r="1"></circle>
+        </svg>
+        Instagram: @vuelder.dev
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll(".reveal");
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: "0px 0px -70px 0px"
+    });
+
+    revealElements.forEach((element) => {
+      revealObserver.observe(element);
+    });
+  </script>
+</body>
+</html>
